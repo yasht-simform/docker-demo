@@ -1,0 +1,89 @@
+Q. Problem statement:
+--> project run on my system perfectly but it fails to run on production or someone else's system
+
+
+#Docker Container:
+-- code
+-- Dependencies
+-- Config
+-- Process
+-- Networking 
+-- OS (some chunk)
+
+Q. How to build docker image?
+
+
+gpg --generate-key
+pass init <your_generated_gpg-id_public_key>
+
+pass init CC65D9DFC9267EAD07AC31685C332BE0717B9B07
+
+
+docker login
+docker build -t yashsimform/hey-nodejs:0.0.1.RELEASE .
+docker container ls
+
+
+2	"yash.trivedi@mailinator.com"	"$2b$10$zIzPbzanjBcYzjkkK/iNWOXfiy6NwjmKBp.HYmn/hgZQGVeLg6vpK"	"2024-04-18 10:57:19.859827"	"2024-04-22 11:20:31.043995"	"active"	"trial"	"test"	"2024-04-18 10:57:19.859827"	"Yash"	"Trivedi"	"admin"
+
+
+create .dockerignore file
+
+
+COPY . .
+left . is source(local directory)
+right . is Destination (docker directory)
+
+
+OS,Dependency and source code will be part of Docker build/image
+
+Command to create docker build 
+# docker build -t express-docker-image . // here . means Current file mai se dockerfile utha do aur image kp build karo
+
+Command to list all docker images
+# docker image ls
+
+Once image is build. We have to create container with the same Image
+
+Command to run container
+# docker run OR 
+# docker run --rm OR 
+# docker run --rm -d OR  / -d means deteach mode. container will be run in background mode. not show in terminal
+# docker run --rm -d -p 5500:5500 // Map DOcker port with Our App port
+# docker run --rm -d -p 5500:5500 --name express-docker-container // Give name to container
+# docker run --rm -d -p 5500:5500 --name express-docker-container express-docker-image
+
+# docker ps //provides a list of the Docker containers on your machine
+
+# docker stop <DOCKER TERMINAL ID> // Will get this from command "docker ps"
+Ex: docker stop 32028eaf4429
+
+In order to keep Container in-sync with new changes we have to bind one foler with docker
+#docker run --rm -d -p 5500:5500 -v $(pwd):/app --name express-docker-container express-docker-image // Here command "-v $(pwd):/app" means mount PWD in /app(docker version of code as mention in Dockerfile)
+
+
+
+Differences Between .Dockerfile VS docker-compose.yaml
+Scope:
+
+Dockerfile: Focuses on building a single Docker image.
+docker-compose.yml: Focuses on running and managing multiple Docker containers as a cohesive application.
+Functionality:
+
+Dockerfile: Used for specifying the environment setup and application dependencies.
+docker-compose.yml: Used for orchestrating the deployment, networking, and scaling of multiple containers.
+Commands:
+
+Dockerfile: docker build -t <tag> . to build an image.
+docker-compose.yml: docker-compose up to start the application and docker-compose down to stop it.
+
+===> docker-compose.yaml
+#docker ps
+#docker-compose up -d // it .yaml file name is not given by default it will consider docker-compose.yaml.
+#docker-compose up -f <path of yaml file if name is not docker-compose.yaml> -d 
+
+
+#docker logs <container name> // to see logs. can check if build is success or fail
+
+#docker-compose down
+
